@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import fr.diginamic.jdbc.recensement.service.RecherchePopulationVilleService;
+import fr.diginamic.jdbc.recensement.service.RechercherDepartementsPlusPeuples;
 import fr.diginamic.jdbc.recensement.service.RechercherPopulationDepartement;
 import fr.diginamic.jdbc.recensement.service.RechercherPopulationRegion;
+import fr.diginamic.jdbc.recensement.service.RechercherRegionsPlusPeuplees;
 
 /**
  * @author Antoine
@@ -38,6 +40,14 @@ public class Application {
 				RechercherPopulationRegion rechercherPopulationRegion = new RechercherPopulationRegion();
 				rechercherPopulationRegion.traiter(scString);
 				break;
+			case 4:
+				RechercherDepartementsPlusPeuples rechercherDepartementsPlusPeuples = new RechercherDepartementsPlusPeuples();
+				rechercherDepartementsPlusPeuples.traiter(scString);
+				break;
+			case 5:
+				RechercherRegionsPlusPeuplees rechercherRegionsPlusPeuplees = new RechercherRegionsPlusPeuplees();
+				rechercherRegionsPlusPeuplees.traiter(scString);
+				break;
 			}
 		}
 	}
@@ -58,9 +68,9 @@ public class Application {
 		System.out.println("1 - Population d'une ville donnée");
 		System.out.println("2 - Population d'un département donné");
 		System.out.println("3 - Population d'une région donnnée");
+		System.out.println("4 - Afficher les 10 départements les plus peuplés");
+		System.out.println("5 - Afficher les 10 régions les plus peuplées");
 		// TODO
-//		System.out.println("4 - Afficher les 10 régions les plus peuplées");
-//		System.out.println("5 - Afficher les 10 départements les plus peuplés");
 //		System.out.println("6 - Afficher les 10 villes les plus peuplées d'un département");
 //		System.out.println("7 - Afficher les 10 villes les plus peuplées d'une réégion");
 //		System.out.println("8 - Afficher les 10 villes les plus peuplées de France");

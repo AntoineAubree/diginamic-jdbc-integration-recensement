@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.diginamic.jdbc.recensement.entites.Departement;
@@ -47,6 +48,29 @@ public class DepartementDao {
 			System.out.println(e.getMessage());
 		}
 		return departement;
+	}
+
+	public static List<Departement> rechercherDepartementPlusPeuples() {
+		Connection connection = DaoUtils.getConnection();
+		ArrayList<Departement> departements = new ArrayList<>();
+		String requete = (
+				"SELECT code_departement, SUM(ville.population) AS population_totale FROM ville JOIN departement ON ville.id_departement = departement.id GROUP BY ville.id_departement ORDER BY population_totale DESC LIMIT 10");
+		try {
+			PreparedStatement pstmt = connection.prepareStatement(requete);
+			ResultSet curseur = pstmt.executeQuery();
+			while (curseur.next()) {
+				Departement departement = new Departement();
+				departement.setCodeDepartement(curseur.getString("code_departement"));
+				departement.setPopulation(curseur.getInt("population_totale"));
+				departements.add(departement);
+			}
+			curseur.close();
+			pstmt.close();
+			connection.close();
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return departements;
 	}
 
 }

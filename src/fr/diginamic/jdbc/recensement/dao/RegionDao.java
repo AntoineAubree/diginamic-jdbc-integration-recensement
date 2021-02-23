@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.diginamic.jdbc.recensement.entites.Region;
@@ -48,6 +49,30 @@ public class RegionDao {
 			System.out.println(e.getMessage());
 		}
 		return region;
+	}
+	
+	public static List<Region> rechercherRegionsPlusPeuples() {
+		Connection connection = DaoUtils.getConnection();
+		ArrayList<Region> regions = new ArrayList<>();
+		String requete = (
+				"SELECT code_region, nom_region, SUM(ville.population) AS population_totale FROM ville JOIN region ON ville.id_region = region.id GROUP BY ville.id_region ORDER BY population_totale DESC LIMIT 10");
+		try {
+			PreparedStatement pstmt = connection.prepareStatement(requete);
+			ResultSet curseur = pstmt.executeQuery();
+			while (curseur.next()) {
+				Region region = new Region();
+				region.setCodeRegion(curseur.getInt("code_region"));
+				region.setNomRegion(curseur.getString("nom_region"));
+				region.setPopulation(curseur.getInt("population_totale"));
+				regions.add(region);
+			}
+			curseur.close();
+			pstmt.close();
+			connection.close();
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return regions;
 	}
 
 }
